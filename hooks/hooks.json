@@ -1,0 +1,63 @@
+{
+  "description": "Recall hooks - exports session env, indexes every completed turn, re-anchors after compaction, finalizes sessions",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 && PY=python3 || PY=python; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/session_start.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 && PY=python3 || PY=python; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/post_compact.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 && PY=python3 || PY=python; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/prompt_submit.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 && PY=python3 || PY=python; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/stop.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 && PY=python3 || PY=python; \"$PY\" \"${CLAUDE_PLUGIN_ROOT}/hooks/session_end.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
